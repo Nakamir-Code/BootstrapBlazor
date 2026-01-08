@@ -42,6 +42,10 @@ public class JSModule(IJSObjectReference? jSObjectReference) : IAsyncDisposable
     /// <returns></returns>
     public virtual async ValueTask InvokeVoidAsync(string identifier, CancellationToken cancellationToken = default, params object?[]? args)
     {
+#if DEBUG
+        // Capture caller info before any async work
+        var callStack = Environment.StackTrace;
+#endif
         var paras = new List<object?>();
         if (args != null)
         {
@@ -54,11 +58,15 @@ public class JSModule(IJSObjectReference? jSObjectReference) : IAsyncDisposable
                 await jSObjectReference.InvokeVoidAsync(identifier, cancellationToken, [.. paras]);
             }
         }
-        catch (JSException)
+        catch (JSException ex)
         {
 #if DEBUG
-            System.Console.WriteLine($"identifier: {identifier} args: {string.Join(" ", args!)}");
-            throw;
+            System.Console.Error.WriteLine($"[JSModule] JSException in InvokeVoidAsync");
+            System.Console.Error.WriteLine($"  Identifier: {identifier}");
+            System.Console.Error.WriteLine($"  Args: {string.Join(", ", args ?? [])}");
+            System.Console.Error.WriteLine($"  JS Error: {ex.Message}");
+            System.Console.Error.WriteLine($"  Call Stack:\n{callStack}");
+            //throw;
 #endif
         }
         catch (JSDisconnectedException) { }
@@ -97,6 +105,10 @@ public class JSModule(IJSObjectReference? jSObjectReference) : IAsyncDisposable
     /// <returns></returns>
     public virtual async ValueTask<TValue?> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken = default, params object?[]? args)
     {
+#if DEBUG
+        // Capture caller info before any async work
+        var callStack = Environment.StackTrace;
+#endif
         var paras = new List<object?>();
         if (args != null)
         {
@@ -111,10 +123,14 @@ public class JSModule(IJSObjectReference? jSObjectReference) : IAsyncDisposable
                 ret = await jSObjectReference.InvokeAsync<TValue?>(identifier, cancellationToken, [.. paras]);
             }
         }
-        catch (JSException)
+        catch (JSException ex)
         {
 #if DEBUG
-            System.Console.WriteLine($"identifier: {identifier} args: {string.Join(" ", args!)}");
+            System.Console.Error.WriteLine($"[JSModule] JSException in InvokeAsync<{typeof(TValue).Name}>");
+            System.Console.Error.WriteLine($"  Identifier: {identifier}");
+            System.Console.Error.WriteLine($"  Args: {string.Join(", ", args ?? [])}");
+            System.Console.Error.WriteLine($"  JS Error: {ex.Message}");
+            System.Console.Error.WriteLine($"  Call Stack:\n{callStack}");
             throw;
 #endif
         }
