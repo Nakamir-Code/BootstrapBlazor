@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <Version>9.3.0</Version>
-    <StaticWebAssetBasePath>_content/BootstrapBlazor</StaticWebAssetBasePath>
   </PropertyGroup>
 
   <ItemGroup>
