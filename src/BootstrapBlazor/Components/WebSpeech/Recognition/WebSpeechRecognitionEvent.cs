@@ -19,4 +19,9 @@ public class WebSpeechRecognitionEvent
     /// 获得/设置 是否已经结束
     /// </summary>
     public bool IsFinal { get; set; }
+
+    /// <summary>
+    /// 获得/设置 结果索引 (用于检测移动浏览器上的重叠结果)
+    /// </summary>
+    public int ResultIndex { get; set; }
 }

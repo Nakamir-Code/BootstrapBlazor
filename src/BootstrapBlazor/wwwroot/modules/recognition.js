@@ -64,7 +64,8 @@ export async function start(id, invoke, trigger, option) {
         }
         invoke.invokeMethodAsync("TriggerResultCallback", {
             transcript: interim_transcript || final_transcript,
-            isFinal: isFinal
+            isFinal: isFinal,
+            resultIndex: e.resultIndex
         });
     }
     const { lang, maxAlternatives, continuous, interimResults } = option;
