@@ -70,6 +70,13 @@ public partial class Table<TItem>
     /// </summary>
     protected int PageCount { get; set; }
 
+	/// <summary>
+	/// <para lang="zh">获得/设置 初始页码 默认 1，仅在首次渲染时生效</para>
+	/// <para lang="en">Gets or sets Initial page index. Default 1.
+	/// </summary>
+	[Parameter]
+    public int InitialPageIndex { get; set; } = 1;
+
     /// <summary>
     /// <para lang="zh">获得/设置 当前页码 默认 1</para>
     /// <para lang="en">Gets or sets Current page index. Default 1</para>

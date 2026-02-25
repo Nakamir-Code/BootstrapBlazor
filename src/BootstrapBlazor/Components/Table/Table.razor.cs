@@ -1426,6 +1426,8 @@ public partial class Table<TItem> : ITable, IModelEqualityComparer<TItem> where 
         // 获取是否自动查询参数值
         _autoQuery = IsAutoQueryFirstRender;
 
+        PageIndex = InitialPageIndex;
+
         _firstQuery = true;
         await QueryAsync();
         _firstQuery = false;
