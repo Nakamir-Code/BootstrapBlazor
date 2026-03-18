@@ -102,6 +102,7 @@ const Popover = {
                     }
                     body.classList.add('show')
                     const content = popover.toggleMenu
+                    if (!content) return
                     if (content.classList.contains("d-none")) {
                         popover.hasDisplayNone = true;
                         content.classList.remove("d-none")
@@ -198,8 +199,10 @@ const Popover = {
 
     dispose(popover) {
         if (popover.isPopover) {
-            popover.observer.disconnect()
-            delete popover.observer
+            if (popover.observer) {
+                popover.observer.disconnect()
+                delete popover.observer
+            }
 
             if (popover.popover) {
                 popover.popover.dispose()
