@@ -185,15 +185,19 @@ export function init(id, invoke, method) {
     const headerId = el.getAttribute("data-bb-header-id");
     if (headerId) {
         const header = document.getElementById(headerId)
-        tab.header = header.querySelector('.tabs > .tabs-header');
+        tab.header = header?.querySelector('.tabs > .tabs-header')
     }
     else {
         tab.header = el.firstChild
     }
 
-    tab.wrap = tab.header.firstChild
-    tab.scroll = tab.wrap.querySelector('.tabs-nav-scroll')
-    tab.tabNav = tab.scroll.firstChild
+    tab.wrap = tab.header?.firstChild
+    tab.scroll = tab.wrap?.querySelector('.tabs-nav-scroll')
+    tab.tabNav = tab.scroll?.firstChild
+    if (!tab.tabNav) {
+        Data.remove(id)
+        return
+    }
     tab.resizeHandler = () => {
         resize(tab)
     }
