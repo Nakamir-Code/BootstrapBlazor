@@ -56,7 +56,7 @@ export function init(id, invoke, shownCallback, closeCallback) {
 
     modal.hide = () => {
         if (el.children.length === 1) {
-            modal.modal.hide();
+            modal.modal?.hide();
             restoreBodyStyle(modal);
         }
         else {
