@@ -67,6 +67,28 @@ public class ErrorLoggerTest : BootstrapBlazorTestBase
         await cut.InvokeAsync(() => button.Click());
     }
 
+    [Theory]
+    [InlineData("true")]
+    [InlineData("false")]
+    public async Task ErrorRender_EncodesMessage(string detailedError)
+    {
+        var config = Context.Services.GetRequiredService<IConfiguration>();
+        config["DetailedErrors"] = detailedError;
+
+        var cut = Context.Render<BootstrapBlazorRoot>(pb =>
+        {
+            pb.Add(a => a.ShowErrorLoggerToast, true);
+            pb.AddChildContent<Button>(pb =>
+            {
+                pb.Add(b => b.OnClick, () => throw new InvalidOperationException("<img src=x onerror=alert(1)>"));
+            });
+        });
+        var button = cut.Find("button");
+        await cut.InvokeAsync(() => button.Click());
+        cut.Contains("&lt;img src=x onerror=alert(1)&gt;");
+        Assert.Empty(cut.FindAll(".error-stack img"));
+    }
+
     [Fact]
     public async Task OnErrorHandleAsync_Ok()
     {

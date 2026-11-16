@@ -4,6 +4,7 @@
 // Maintainer: Argo Zhang(argo@live.ca) Website: https://www.blazor.zone
 
 using System.Collections.Specialized;
+using System.Net;
 using System.Text;
 
 namespace BootstrapBlazor.Components;
@@ -51,6 +52,6 @@ public static class ExceptionExtensions
     public static MarkupString FormatMarkupString(this Exception exception, NameValueCollection? collection = null)
     {
         var message = Format(exception, collection);
-        return new MarkupString(message.Replace(Environment.NewLine, "<br />"));
+        return new MarkupString(WebUtility.HtmlEncode(message).Replace(Environment.NewLine, "<br />"));
     }
 }
