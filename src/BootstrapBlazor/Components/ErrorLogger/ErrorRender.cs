@@ -5,6 +5,7 @@
 
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.Extensions.Configuration;
+using System.Net;
 
 namespace BootstrapBlazor.Components;
 
@@ -55,6 +56,6 @@ class ErrorRender : IComponent
         _errorDetails ??= Configuration.GetValue("DetailedErrors", false);
         return _errorDetails is true
             ? ex.FormatMarkupString(Configuration.GetEnvironmentInformation())
-            : new MarkupString(ex.Message);
+            : new MarkupString(WebUtility.HtmlEncode(ex.Message));
     }
 }
