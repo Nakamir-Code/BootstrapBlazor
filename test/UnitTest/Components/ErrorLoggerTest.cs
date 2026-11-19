@@ -275,6 +275,31 @@ public class ErrorLoggerTest : BootstrapBlazorTestBase
     }
 
     [Fact]
+    public async Task Modal_ErrorContent_Ok()
+    {
+        var cut = Context.Render<BootstrapBlazorRoot>(pb =>
+        {
+            pb.Add(a => a.ShowErrorLoggerToast, true);
+            pb.AddChildContent<ErrorLogger>(pb =>
+            {
+                pb.Add(a => a.ErrorContent, new RenderFragment<Exception>(ex => builder => builder.AddContent(0, "error_content_template")));
+                pb.AddChildContent<Modal>(pb =>
+                {
+                    pb.AddChildContent<ModalDialog>(pb =>
+                    {
+                        pb.Add(d => d.BodyTemplate, RenderButton());
+                    });
+                });
+            });
+        });
+
+        var button = cut.Find(".modal-body button");
+        await cut.InvokeAsync(() => button.Click());
+        cut.Contains("error_content_template");
+        Assert.DoesNotContain("Attempted to divide by zero.", cut.Markup);
+    }
+
+    [Fact]
     public async Task TabItem_Error()
     {
         var cut = Context.Render<BootstrapBlazorRoot>(pb =>

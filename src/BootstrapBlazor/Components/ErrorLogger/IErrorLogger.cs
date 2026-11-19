@@ -36,6 +36,12 @@ public interface IErrorLogger
     string? ToastTitle { get; }
 
     /// <summary>
+    /// <para lang="zh">获得 异常显示模板 默认 null</para>
+    /// <para lang="en">Get Exception Display Template Default null</para>
+    /// </summary>
+    RenderFragment<Exception>? ErrorContent => null;
+
+    /// <summary>
     /// <para lang="zh">获得/设置 自定义 Error 处理方法 默认 null</para>
     /// <para lang="en">Gets or sets Custom Error Handler Default null</para>
     /// </summary>

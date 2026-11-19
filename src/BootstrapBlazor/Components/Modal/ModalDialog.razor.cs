@@ -494,7 +494,8 @@ public partial class ModalDialog
             builder.AddAttribute(20, nameof(IErrorLogger.EnableILogger), ErrorLogger.EnableILogger);
             builder.AddAttribute(30, nameof(IErrorLogger.ShowToast), ErrorLogger.ShowToast);
             builder.AddAttribute(40, nameof(IErrorLogger.ToastTitle), ErrorLogger.ToastTitle);
-            builder.AddAttribute(40, nameof(BootstrapBlazorErrorBoundary.ChildContent), BodyTemplate);
+            builder.AddAttribute(45, nameof(IErrorLogger.ErrorContent), ErrorLogger.ErrorContent);
+            builder.AddAttribute(50, nameof(BootstrapBlazorErrorBoundary.ChildContent), BodyTemplate);
             builder.CloseComponent();
         }
         else
