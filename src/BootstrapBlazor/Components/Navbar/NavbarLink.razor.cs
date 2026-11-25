@@ -52,13 +52,18 @@ public partial class NavbarLink
             IsDisabled = true;
         }
 
-        await HandlerClick();
-
-        // 恢复按钮
-        if (IsAsync)
+        try
         {
-            IsDisabled = IsKeepDisabled;
-            IsAsyncLoading = false;
+            await HandlerClick();
+        }
+        finally
+        {
+            if (IsAsync)
+            {
+                IsDisabled = IsKeepDisabled;
+                IsAsyncLoading = false;
+                StateHasChanged();
+            }
         }
     }
 }

@@ -40,12 +40,18 @@ public class CountButton : Button
         IsAsyncLoading = true;
         IsDisabled = true;
 
-        await Task.Yield();
-        await HandlerClick();
-        await UpdateCount();
-
-        IsDisabled = false;
-        IsAsyncLoading = false;
+        try
+        {
+            await Task.Yield();
+            await HandlerClick();
+            await UpdateCount();
+        }
+        finally
+        {
+            IsDisabled = false;
+            IsAsyncLoading = false;
+            StateHasChanged();
+        }
     }
 
     /// <summary>

@@ -44,14 +44,18 @@ public partial class ToggleButton
             IsDisabled = true;
         }
 
-        await HandlerClick();
-
-        // <para lang="zh">恢复按钮</para>
-        // <para lang="en">Restore button</para>
-        if (IsAsync)
+        try
         {
-            IsDisabled = IsKeepDisabled;
-            IsAsyncLoading = false;
+            await HandlerClick();
+        }
+        finally
+        {
+            if (IsAsync)
+            {
+                IsDisabled = IsKeepDisabled;
+                IsAsyncLoading = false;
+                StateHasChanged();
+            }
         }
     }
 
