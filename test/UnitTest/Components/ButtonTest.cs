@@ -232,6 +232,24 @@ public class ButtonTest : BootstrapBlazorTestBase
     }
 
     [Fact]
+    public void IsAsync_HandlerThrows_RestoresButton()
+    {
+        var cut = Context.Render<Button>(pb =>
+        {
+            pb.Add(b => b.IsAsync, true);
+            pb.Add(b => b.OnClick, async e =>
+            {
+                await Task.Delay(10);
+                throw new InvalidOperationException("load failed");
+            });
+        });
+
+        cut.Find("button").Click();
+        cut.WaitForAssertion(() => Assert.False(cut.Find("button").HasAttribute("disabled")));
+        Assert.False(cut.Instance.IsDisabled);
+    }
+
+    [Fact]
     public void IsOutline_Ok()
     {
         var cut = Context.Render<Button>(pb =>

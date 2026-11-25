@@ -53,13 +53,18 @@ public partial class Button : ButtonBase
             await Task.Yield();
         }
 
-        await HandlerClick();
-
-        // 恢复按钮
-        if (IsAsync && ButtonType == ButtonType.Button)
+        try
         {
-            IsDisabled = IsKeepDisabled;
-            IsAsyncLoading = false;
+            await HandlerClick();
+        }
+        finally
+        {
+            if (IsAsync && ButtonType == ButtonType.Button)
+            {
+                IsDisabled = IsKeepDisabled;
+                IsAsyncLoading = false;
+                StateHasChanged();
+            }
         }
     }
 
